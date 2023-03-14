@@ -160,3 +160,100 @@ nextBtn.addEventListener("click", (displayNext = () =>{
     }
 })
 );
+
+const timerDisplay = () => {
+    countdown = setInterval(() => {
+        count--;
+        timeLeft.innerHTML = `${count}s`;
+        if (count == 0) {
+            clearInterval(countdown);
+            displayNext();
+        }
+    }, 1000);
+};
+
+const quizDispplay = (questionCount) => {
+    let quizCards = document.querySelectorAll(".container-mid");
+
+    quizCards.forEach((card) => {
+        card.classList.add("hide");
+    });
+    quizCards[questionCount].classList.remove("hide");
+};
+
+function quizCreator() {
+    quizArray.sort(() => Math.random() - 0.5);
+    
+    for (let i of quizArray) {
+        i.options.sort(() => Math.random() - 0.5);
+        let div = document.createElement("div");
+        div.classList.add("container-mid", "hide");
+
+        countOfQuestion.innerHTML = 1 + "of" + quizArray.length + "Question";
+
+        let question_DIV = dicument.createElement("p");
+        question_DIV.classList.add("question");
+        question_DIV.innerHTML = i.question;
+        div.appendChild(question_DIV);
+
+        div.innerHTML += `
+        <button class="option-div" onclick="checker(this)">
+        ${i.options[0]}</button>
+        <button class="option-div" onclick="checker(this)">
+        ${i.options[1]}</button>
+        <button class="option-div" onclick="checker(this)">
+        ${i.options[2]}</button>
+        <button class="option-div" onclick="checker(this)">
+        ${i.options[3]}</button>
+        `;
+
+        quizContainer.appendChild(div);
+    }
+};
+
+function checker(userOption){
+    let userSolution = userOption.innerText;
+    let question = document.getElementsByClassName ("container-mid")[questionCount];
+    let options = question.querySelectorAll(".option-div");
+
+    if (userSolution === quizArray[questionCount].correct) {
+        userOption.classList.add("correct");
+        scoreCount++;
+    } else {
+        userOption.classList.add("incorrect");
+
+        options.forEach((element) => {
+            if ((element.innerText = quizArray[questionCount].correct)) {
+                element.classList.add("correct");
+            }
+        });
+    }
+
+    clearInterval(countdown);
+    options.forEach((element) => {
+        element.disabled = true;
+    });
+}
+
+function initial() {
+    quizContainer.innerHTML = "";
+    questionCount = 0;
+    scoreCount = 0;
+    scoreCount = 0;
+    count = 11;
+    clearInterval(countdown);
+    timerDisplay();
+    quizCreator();
+    quizDispplay(questionCount);
+}
+
+startBtn.addEventListener("click", () => {
+    startScreen.classList.add("hide");
+    displayContainer.classList.remove("hide");
+    initial();
+});
+
+window.onload = () => {
+    startScreen.classList.remove("hide");
+    displayContainer.classList.add("hide");
+};
