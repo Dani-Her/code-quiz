@@ -13,7 +13,14 @@ let scoreCount = 0;
 let count = 11;
 let countdown; 
 
+// audio 
+const effectCorrect = new audio();
+effectCorrect.src = "./assets/sfx/correct.wav";
 
+const effectIncorrect = new audio();
+effectIncorrect.src = "./assets/sfx/incorrect.wav";
+
+// questions with answers and options
 const quizArray = [
     {
         id: "0",
@@ -125,4 +132,31 @@ const quizArray = [
         ],
         correct:"The end of the <body> section",
     }
-]
+];
+
+restart.addEventListener("click", () =>{
+    initial();
+    displayContainer.classList.remove("hide");
+    scoreContainer.classList.add("hide");
+});
+
+nextBtn.addEventListener("click", (displayNext = () =>{
+    questionCount += 1;
+
+    if (questionCount == quizArray.length){
+        displayContainer.classList.add("hide");
+        scoreContainer.classList.remove("hide");
+        userScore.innerHTML = "Your score is " +
+        scoreCount + "out of  " + questionCount;
+    }
+    else {
+        countOfQuestion.innerHTML = questionCount + 1 +
+        " of " + quizArray.length + " Question ";
+
+        quizDisplay(questionCount);
+        count = 11;
+        clearInterval(countdown);
+        timerDisplay();
+    }
+})
+);
