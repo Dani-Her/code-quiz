@@ -1,24 +1,32 @@
 let timeLeft = document.querySelector(".time-left");
-let quizContainer = document.getElementById("questions-container");
+let quizContainer = document.getElementById("container");
 let nextBtn = document.getElementById("next-button");
 let countOfQuestion = document.querySelector(".number-of-question");
 let displayContainer = document.getElementById("display-container");
-let scoreContainer = document.querySelector(".score-container"); 
+let scoreContainer = document.querySelector(".score-container");
 let restart = document.getElementById("restart");
 let userScore = document.getElementById("user-score");
 let startScreen = document.querySelector(".start-screen");
-let startBtn= document.getElementById("start-button")
+let startBtn = document.getElementById("start-button");
 let questionCount;
 let scoreCount = 0;
 let count = 11;
-let countdown; 
+let countdown;
+
+// local storage 
+let submitBtn = document.querySelector(".submit-btn");
+let highScorePage = document.querySelector(".highscore-page");
+let scoreRecord = document.querySelector(".score-record");
+let scoreCheck = document.querySelector(".score-check");
+let finish = document.querySelector(".finish");
 
 // audio 
-const effectCorrect = new audio();
+const effectCorrect = new Audio();
 effectCorrect.src = "./assets/sfx/correct.wav";
 
-const effectIncorrect = new audio();
+const effectIncorrect = new Audio();
 effectIncorrect.src = "./assets/sfx/incorrect.wav";
+
 
 // questions with answers and options
 const quizArray = [
@@ -27,131 +35,133 @@ const quizArray = [
         question: "What does HTML stand for?",
         options: [
             "Hyper Trainer Marking Language",
-            "Hyper Text Marketing Language", 
+            "Hyper Text Marketing Language",
             "HyperText Markup Language",
             "HyperText Markup Leveler",
         ],
-        correct:"HyperText Markrup language",
+        correct: "HyperText Markup Language",
     },
     {
         id: "1",
         question: "Which command will stop an infinite loop?",
         options: [
             "Alt - C",
-            "Shift - C", 
+            "Shift - C",
             "Esc",
             "Ctrl - C",
         ],
-        correct:"Ctrl - C",
+        correct: "Ctrl - C",
     },
     {
         id: "2",
         question: "Which is not a required part of a loop?",
         options: [
             "Initialization",
-            "Condition", 
+            "Condition",
             "Variable",
             ") Increment",
         ],
-        correct:"Variable",
+        correct: "Variable",
     },
     {
         id: "3",
         question: "__ is the process of finding errors and fixing them within a program.",
         options: [
             "Compiling",
-            "Executing", 
+            "Executing",
             "Debugging",
             "Scanning",
         ],
-        correct:"Debugging",
+        correct: "Debugging",
     },
     {
         id: "4",
         question: "During program development, software requirements specify",
         options: [
             "How the program will accomplish the task",
-            "What the task is that the program must perform", 
+            "What the task is that the program must perform",
             "How to divide the task into subtasks",
             "How to test the program when it is done",
         ],
-        correct:"What the task is that the program must perform",
+        correct: "What the task is that the program must perform",
     },
     {
         id: "5",
         question: "At run-time, a Java program is nothing more than objects 'communicating' to ___.",
         options: [
             "Other objects",
-            "Other methods", 
+            "Other methods",
             "Other classes",
             "Other binders",
         ],
-        correct:"Other objects",
+        correct: "Other objects",
     },
     {
         id: "6",
         question: "What must string values be enclosed within when assigning them to variables?",
         options: [
             "Commas",
-            "Quotes", 
+            "Quotes",
             "Paranthesis",
             "Straight brackets",
         ],
-        correct:"Quotes",
+        correct: "Quotes",
     },
     {
         id: "7",
         question: "What would you use to check if two variables are equal in an if/ else statement?",
         options: [
             "==",
-            "=", 
+            "=",
             "is equal to",
             "!=",
         ],
-        correct:"==",
+        correct: "==",
     },
     {
         id: "8",
         question: "Inside which HTML element do we put the JavaScript?",
         options: [
-            "<javaScript>",
-            "<js>", 
-            "<script>",
-            "<scripting>",
+            "javaScript",
+            "js",
+            "script",
+            "scripting",
         ],
-        correct:"<script>",
+        correct: "script",
     },
     {
         id: "9",
         question: "Where is the correct place to insert a JavaScript?",
         options: [
-            "The <head> section",
-            "The <body> section", 
-            "The end of the <body> section",
+            "The head section",
+            "The body section",
+            "The end of the body section",
             "Anywhere",
         ],
-        correct:"The end of the <body> section",
+        correct: "The end of the body section",
     }
 ];
 
-restart.addEventListener("click", () =>{
+// restart btn
+restart.addEventListener("click", () => {
     initial();
     displayContainer.classList.remove("hide");
     scoreContainer.classList.add("hide");
 });
 
-nextBtn.addEventListener("click", (displayNext = () =>{
+// next btn
+nextBtn.addEventListener("click", (displayNext = () => {
     questionCount += 1;
 
-    if (questionCount == quizArray.length){
+    if (questionCount == quizArray.length) {
         displayContainer.classList.add("hide");
         scoreContainer.classList.remove("hide");
         userScore.innerHTML = "Your score is " +
-        scoreCount + "out of  " + questionCount;
+            scoreCount + " out of  " + questionCount;
     }
     else {
-        countOfQuestion.innerHTML = questionCount + 1 +
-        " of " + quizArray.length + " Question ";
+        countOfQuestion.innerHTML =
+            questionCount + 1 + " of " + quizArray.length + " Question ";
 
         quizDisplay(questionCount);
         count = 11;
@@ -161,6 +171,7 @@ nextBtn.addEventListener("click", (displayNext = () =>{
 })
 );
 
+// timer
 const timerDisplay = () => {
     countdown = setInterval(() => {
         count--;
@@ -172,7 +183,7 @@ const timerDisplay = () => {
     }, 1000);
 };
 
-const quizDispplay = (questionCount) => {
+const quizDisplay = (questionCount) => {
     let quizCards = document.querySelectorAll(".container-mid");
 
     quizCards.forEach((card) => {
@@ -181,17 +192,17 @@ const quizDispplay = (questionCount) => {
     quizCards[questionCount].classList.remove("hide");
 };
 
-function quizCreator() {
+function quizCreater() {
     quizArray.sort(() => Math.random() - 0.5);
-    
+
     for (let i of quizArray) {
         i.options.sort(() => Math.random() - 0.5);
         let div = document.createElement("div");
         div.classList.add("container-mid", "hide");
 
-        countOfQuestion.innerHTML = 1 + "of" + quizArray.length + "Question";
+        countOfQuestion.innerHTML = 1 + " of " + quizArray.length + " Questions";
 
-        let question_DIV = dicument.createElement("p");
+        let question_DIV = document.createElement("p");
         question_DIV.classList.add("question");
         question_DIV.innerHTML = i.question;
         div.appendChild(question_DIV);
@@ -211,19 +222,22 @@ function quizCreator() {
     }
 };
 
-function checker(userOption){
+
+function checker(userOption) {
     let userSolution = userOption.innerText;
-    let question = document.getElementsByClassName ("container-mid")[questionCount];
+    let question = document.getElementsByClassName("container-mid")[questionCount];
     let options = question.querySelectorAll(".option-div");
 
     if (userSolution === quizArray[questionCount].correct) {
         userOption.classList.add("correct");
         scoreCount++;
+        effectCorrect.play();
     } else {
         userOption.classList.add("incorrect");
+        effectIncorrect.play();
 
         options.forEach((element) => {
-            if ((element.innerText = quizArray[questionCount].correct)) {
+            if (element.innerText == quizArray[questionCount].correct) {
                 element.classList.add("correct");
             }
         });
@@ -243,8 +257,8 @@ function initial() {
     count = 11;
     clearInterval(countdown);
     timerDisplay();
-    quizCreator();
-    quizDispplay(questionCount);
+    quizCreater();
+    quizDisplay(questionCount);
 }
 
 startBtn.addEventListener("click", () => {
@@ -257,3 +271,5 @@ window.onload = () => {
     startScreen.classList.remove("hide");
     displayContainer.classList.add("hide");
 };
+
+
