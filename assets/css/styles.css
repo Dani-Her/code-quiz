@@ -28,14 +28,24 @@ button {
 }
 
 #start-button,
-#restart {
+#restart,
+#add-score {
   font-size: 1.33em;
   padding: 0.5em 1.8em;
   border-radius: 0.2em;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
 }
 
-#restart {
+#view-score, .button  {
+  font-size: 1.20em;
+  padding: 0.5em 1em;  
+  border-radius: 0.2em;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+#restart,
+#add-score {
   margin-top: 0.9em;
 }
 
@@ -123,11 +133,10 @@ button {
 
 #user-score {
   font-size: 1.5em;
-  color: #fff;
+  color: #da7b93;
 }
 
-
-/* #next-button:hover {
+#next-button:hover {
   background-color: #376e6f;
-} */
+}
 

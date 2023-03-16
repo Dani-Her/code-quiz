@@ -14,11 +14,11 @@ let count = 11;
 let countdown;
 
 // local storage 
-let submitBtn = document.querySelector(".submit-btn");
-let highScorePage = document.querySelector(".highscore-page");
-let scoreRecord = document.querySelector(".score-record");
-let scoreCheck = document.querySelector(".score-check");
-let finish = document.querySelector(".finish");
+// let submitBtn = document.querySelector;
+// let highScorePage = document.querySelector();
+// let scoreRecord = document.querySelector();
+// let scoreCheck = document.querySelector();
+// let finish = document.querySelector();
 
 // audio 
 const effectCorrect = new Audio();
